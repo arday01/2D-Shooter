@@ -1,22 +1,22 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 
 public class EnemyMovement : MonoBehaviour
 {
-    [SerializeField]private float speed;
+    [SerializeField] private float speed;
 
-    [SerializeField]private float rotationSpeed;
+    [SerializeField] private float rotationSpeed;
     private Rigidbody2D rigidbody;
     private PlayerAwarenessController playerAwarenessController;
 
     private Vector2 targetDirection;
+    private float changeDirectionCooldown;  
 
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         playerAwarenessController = GetComponent<PlayerAwarenessController>();
+        targetDirection = transform.up;
     }
 
     private void FixedUpdate()
@@ -28,38 +28,45 @@ public class EnemyMovement : MonoBehaviour
 
     private void UpdateTargetDirection() //Hedef yönü
     {
+        HandleRandomDirectionChange();
+        HandlePlayerTargeting();
+
+
+    }
+
+    private void HandleRandomDirectionChange()
+    {
+        changeDirectionCooldown -= Time.deltaTime;
+        
+        if (changeDirectionCooldown<0)
+        {
+            float angleChange = Random.Range(-90f, 90f);
+            Quaternion rotation = Quaternion.AngleAxis(angleChange, transform.forward);
+            targetDirection = rotation * targetDirection;
+            changeDirectionCooldown = Random.Range(1f,5f);
+        }
+    }
+
+    private void HandlePlayerTargeting()
+    {
         if (playerAwarenessController.AwereOfPlayer)
         {
             targetDirection = playerAwarenessController.DirectionToPlayer;
-        }
-        else
-        {
-            targetDirection = Vector2.zero;
         }
     }
 
     private void RotateTowardsTarget() //düşman hedef yönünde dönmesi için
     {
-        if (targetDirection==Vector2.zero)
-        {
-            return;
-        }
 
-        Quaternion targetRotation = Quaternion.LookRotation(transform.forward,targetDirection);
-        Quaternion rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed*Time.deltaTime);
-        
+        Quaternion targetRotation = Quaternion.LookRotation(transform.forward, targetDirection);
+        Quaternion rotation =
+            Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
         rigidbody.SetRotation(rotation);
     }
 
-    private void SetVelocity()//Hızı güncellemek için harket
+    private void SetVelocity() //Hızı güncellemek için harket
     {
-        if (targetDirection == Vector2.zero)
-        {
-            rigidbody.velocity = Vector2.zero;
-        }
-        else
-        {
-            rigidbody.velocity = transform.up * speed;
-        }
-    } 
+        rigidbody.velocity = transform.up * speed;
+    }
 }
