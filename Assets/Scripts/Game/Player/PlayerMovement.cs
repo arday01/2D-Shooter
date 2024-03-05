@@ -9,10 +9,14 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rigidbody;
 
     [SerializeField]private float rotationSpeed;
-    
+
+    [SerializeField] private float screenBorder;
+        
     private Vector2 movementInpute;
     private Vector2 smoothedMovementInput;
     private Vector2 movementInputSmoothVelocity;
+
+    private Camera camera;
 
 
     public static PlayerMovement Instance;
@@ -20,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody2D>();
         Instance = this;
+        camera = Camera.main;
     }
 
     private void FixedUpdate()
@@ -34,6 +39,22 @@ public class PlayerMovement : MonoBehaviour
             ref movementInputSmoothVelocity, 0.1f); //harketi yumuşatık
 
         rigidbody.velocity = smoothedMovementInput*speed; //hız ve düzgün harket ekledik
+        PreventPlayerGoingOffScreen();
+    }
+
+    private void PreventPlayerGoingOffScreen()
+    {
+        Vector2 screenPosition = camera.WorldToScreenPoint(transform.position); //ekran nersinde oldunu
+
+        if ((screenPosition.x<screenBorder && rigidbody.velocity.x<0)||(screenPosition.x> camera.pixelWidth-screenBorder && rigidbody.velocity.x>0)) //ekran solunda sağında çıkarsa demek
+        {
+            rigidbody.velocity = new Vector2(0, rigidbody.velocity.y);
+        }
+        
+        if ((screenPosition.y<screenBorder && rigidbody.velocity.y<0)||(screenPosition.y> camera.pixelHeight-screenBorder && rigidbody.velocity.y>0)) //ekran YUKAR AŞAĞI çıkarsa demek
+        {
+            rigidbody.velocity = new Vector2(rigidbody.velocity.x, 0);
+        }
     }
 
     private void RotateInDirectionInput() //karket yöne göre bakması
