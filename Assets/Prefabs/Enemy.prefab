@@ -77,6 +77,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 1
   rotationSpeed: 100
+  screenBorder: -30
 --- !u!114 &1493426302961666879
 MonoBehaviour:
   m_ObjectHideFlags: 0

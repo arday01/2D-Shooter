@@ -11,12 +11,16 @@ public class EnemyMovement : MonoBehaviour
 
     private Vector2 targetDirection;
     private float changeDirectionCooldown;  
+    
+    [SerializeField] private float screenBorder;
+    private Camera camera;
 
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         playerAwarenessController = GetComponent<PlayerAwarenessController>();
         targetDirection = transform.up;
+        camera = Camera.main;
     }
 
     private void FixedUpdate()
@@ -30,6 +34,7 @@ public class EnemyMovement : MonoBehaviour
     {
         HandleRandomDirectionChange();
         HandlePlayerTargeting();
+        HandleEnemyOffScreen();
 
 
     }
@@ -68,5 +73,20 @@ public class EnemyMovement : MonoBehaviour
     private void SetVelocity() //Hızı güncellemek için harket
     {
         rigidbody.velocity = transform.up * speed;
+    }
+
+    private void HandleEnemyOffScreen()
+    {
+        Vector2 screenPosition = camera.WorldToScreenPoint(transform.position); //ekran nersinde oldunu
+
+        if ((screenPosition.x<screenBorder && targetDirection.x<0)||(screenPosition.x> camera.pixelWidth-screenBorder && targetDirection.x>0)) //ekran solunda sağında çıkarsa demek
+        {
+            targetDirection = new Vector2(-targetDirection.x, targetDirection.y);
+        }
+        
+        if ((screenPosition.y<screenBorder && targetDirection.y<0)||(screenPosition.y> camera.pixelHeight-screenBorder && targetDirection.y>0)) //ekran YUKAR AŞAĞI çıkarsa demek
+        {
+            targetDirection = new Vector2(targetDirection.x, -targetDirection.y);
+        }
     }
 }
