@@ -573,6 +573,7 @@ GameObject:
   - component: {fileID: 1159676533}
   - component: {fileID: 1159676534}
   - component: {fileID: 1159676535}
+  - component: {fileID: 1159676536}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -828,6 +829,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invincibilityDuration: 3
+--- !u!95 &1159676536
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1159676525}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 75b2dd27f6c60a14cb26b34b4e6320dd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1184530895
 GameObject:
   m_ObjectHideFlags: 0

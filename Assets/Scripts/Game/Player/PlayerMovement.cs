@@ -15,8 +15,11 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 movementInpute;
     private Vector2 smoothedMovementInput;
     private Vector2 movementInputSmoothVelocity;
+    
 
     private Camera camera;
+
+    private Animator animator;
 
 
     public static PlayerMovement Instance;
@@ -25,12 +28,21 @@ public class PlayerMovement : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         Instance = this;
         camera = Camera.main;
+        animator = GetComponent<Animator>();
+        SetAnimation();
     }
 
     private void FixedUpdate()
     {
         SetPlayerVelocity();
         RotateInDirectionInput();
+        SetAnimation();
+    }
+
+    private void SetAnimation()
+    {
+        bool isMoving = movementInpute != Vector2.zero;
+        animator.SetBool("IsMoving",isMoving);
     }
 
     private void SetPlayerVelocity()
