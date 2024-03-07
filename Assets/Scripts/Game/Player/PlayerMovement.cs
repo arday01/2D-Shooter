@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -30,6 +31,14 @@ public class PlayerMovement : MonoBehaviour
         camera = Camera.main;
         animator = GetComponent<Animator>();
         SetAnimation();
+    }
+
+    private void Update()
+    {
+        if (FixedJoystick.Instance != null)
+        {
+            movementInpute = new Vector2(FixedJoystick.Instance.Horizontal, FixedJoystick.Instance.Vertical);
+        }
     }
 
     private void FixedUpdate()

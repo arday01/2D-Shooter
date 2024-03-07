@@ -46,6 +46,7 @@ public class HealthController : MonoBehaviour
       if (currentHealth==0)
       {
          OnDied.Invoke();
+         PlayerManager.isGameOver = true;
       }
       else
       {
