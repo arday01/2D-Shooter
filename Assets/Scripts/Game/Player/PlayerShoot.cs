@@ -45,6 +45,7 @@ public class PlayerShoot : MonoBehaviour
 
     private void OnFire(InputValue inputValue)
     {
+        Debug.Log("OnFire");
         fireContinuously = inputValue.isPressed;
         
         if (inputValue.isPressed)

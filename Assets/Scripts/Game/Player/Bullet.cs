@@ -19,11 +19,11 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) //herhangi bir yere çarpınca fark edilcek
     {
-        if (collision.GetComponent<EnemyMovement>())
+        if (collision.TryGetComponent(out EnemyMovement enemyMovement))
         {
             HealthController healthController = collision.GetComponent<HealthController>();
             healthController.TakeDamage(10);
-            Destroy(gameObject);//enemy yok eder
+            Destroy(gameObject);
         }
        
     }
